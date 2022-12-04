@@ -18,7 +18,7 @@ fn main() {
                         let n: u32 = line.parse().unwrap();
                         counted_calories += n;
                     }
-                }
+                },
                 _ => (),
             }
         }
@@ -27,7 +27,7 @@ fn main() {
         let bigger = elfs[elfs.len() - 1];
         println!("maximum: {:?}", bigger);
 
-        let last_three: u32 = elfs[elfs.len()-3..].iter().sum();
+        let last_three: u32 = elfs[elfs.len() - 3..].iter().sum();
         println!("sum of last three: {:?}", last_three);
     }
 }

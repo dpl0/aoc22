@@ -40,9 +40,7 @@ impl Shape {
 use Outcome::*;
 use Shape::*;
 
-///
 /// Variant of the clash for the first problem
-///
 struct ClashFirst {
     elf: Shape,
     me: Shape,
@@ -63,9 +61,7 @@ impl ClashFirst {
     }
 }
 
-///
 /// Variant of the clash for the second problem
-///
 struct ClashSecond {
     elf: Shape,
     outcome: Outcome,
@@ -119,7 +115,7 @@ fn main() {
 
                     score_first += ClashFirst { elf, me }.outcome();
                     score_second += ClashSecond { elf, outcome }.outcome();
-                }
+                },
                 _ => (),
             }
         }
