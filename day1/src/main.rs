@@ -27,8 +27,7 @@ fn main() {
         let bigger = elfs[elfs.len() - 1];
         println!("maximum: {:?}", bigger);
 
-        // Lazy and hacky
-        let last_three = bigger + elfs[elfs.len() - 2] + elfs[elfs.len() - 3];
-        println!("sum(last_three): {:?}", last_three);
+        let last_three: u32 = elfs[elfs.len()-3..].iter().sum();
+        println!("sum of last three: {:?}", last_three);
     }
 }
