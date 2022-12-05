@@ -33,7 +33,6 @@ pub fn get_common_items<'a>(mut backpack: String) -> Vec<char> {
 // Split strings in half and look for common elements.
 // Lowercase item types a through z have priorities 1 through 26.
 // Uppercase item types A through Z have priorities 27 through 52.
-//
 pub fn execute_first(path: &str) -> u32 {
     let mut priorities_sum: u32 = 0;
 
@@ -63,9 +62,30 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use crate::*;
+
+    fn test_line(line: Option<Result<String, std::io::Error>>, common_items_given: Vec<char>, priority_given: u32) {
+        let line = line.unwrap().unwrap();
+        let common = get_common_items(line);
+        assert_eq!(common, common_items_given);
+        let priority = calculate_priority(&common);
+        assert_eq!(priority, priority_given);
+    }
+
     #[test]
     fn example_first() {
-        assert_eq!(crate::execute_first("input_test"), 157);
+        // 16 (p), 38 (L), 42 (P), 22 (v), 20 (t), and 19 (s)
+        let mut lines = get_lines("input_test");
+        test_line(lines.next(), vec!['p'], 16);
+        test_line(lines.next(), vec!['L'], 38);
+        test_line(lines.next(), vec!['P'], 42);
+        test_line(lines.next(), vec!['v'], 22);
+        test_line(lines.next(), vec!['t'], 20);
+        test_line(lines.next(), vec!['s'], 19);
+        drop(lines);
+
+        // The sum of these is 157.
+        assert_eq!(execute_first("input_test"), 157);
     }
 
     //     #[test]
