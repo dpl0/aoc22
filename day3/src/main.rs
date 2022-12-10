@@ -49,8 +49,22 @@ pub fn execute_first(path: &str) -> u32 {
     priorities_sum
 }
 
-pub fn execute_second(_path: &str) -> u32 {
-    0
+// Find one common element for packs of 3 lines.
+// Calculate the priority of that pack and calculate the total.
+pub fn execute_second(path: &str) -> u32 {
+    let mut priorities_sum: u32 = 0;
+
+    let mut lines = get_lines(path);
+    while let (Some(first), Some(second), Some(third)) = (lines.next(), lines.next(), lines.next()) {
+        let first: HashSet<char> = first.expect("Couldn't get string").chars().collect();
+        let second: HashSet<char> = second.expect("Couldn't get string").chars().collect();
+        let third: HashSet<char> = third.expect("Couldn't get string").chars().collect();
+        let common_items: HashSet<char> = first.intersection(&second).map(|c| *c).collect();
+        let common_items: Vec<char> = third.intersection(&common_items).map(|c| *c).collect();
+        let priority = calculate_priority(&common_items);
+        priorities_sum += priority;
+    }
+    priorities_sum
 }
 
 fn main() {
@@ -88,8 +102,8 @@ mod tests {
         assert_eq!(execute_first("input_test"), 157);
     }
 
-    //     #[test]
-    //     fn example_second() {
-    //         assert_eq!(execute_first("input_test"), 157);
-    //     }
+    #[test]
+    fn example_second() {
+        assert_eq!(execute_second("input_test"), 70);
+    }
 }
