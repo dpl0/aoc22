@@ -24,7 +24,6 @@ impl Range {
     }
 
     pub fn is_overlapping_with(&self, other: &Range) -> bool {
-        // Start is in set
         (self.start >= other.start && self.start <= other.end) || (self.end >= other.start && self.end <= other.end)
     }
 }
@@ -33,21 +32,25 @@ fn main() {
     let input = read_to_string("input").expect("File not found");
     let lines: Vec<&str> = input.split('\n').filter(|l| !l.is_empty()).collect();
 
-    // A-B,C-D
-    let contained: Vec<(Range, Range)> = lines
+    // Generate ranges from input
+    let ranges: Vec<(Range, Range)> = lines
         .iter()
         .map(|l| l.split(',').collect::<Vec<&str>>())
         .map(|pair| (Range::new(pair[0]), Range::new(pair[1])))
+        .collect();
+
+    // First problem
+    let contained: usize = ranges
+        .iter()
         .filter(|(first, second)| first.is_contained(second) || second.is_contained(first))
-        .collect();
+        .count();
 
-    let overlapping: Vec<(Range, Range)> = lines
+    // Second problem
+    let overlapping: usize = ranges
         .iter()
-        .map(|l| l.split(',').collect::<Vec<&str>>())
-        .map(|pair| (Range::new(pair[0]), Range::new(pair[1])))
         .filter(|(first, second)| first.is_overlapping_with(second) || second.is_overlapping_with(first))
-        .collect();
+        .count();
 
-    println!("Answer for first problem: {}", contained.len());
-    println!("Answer for second problem: {}", overlapping.len());
+    println!("Answer for first problem: {contained}");
+    println!("Answer for second problem: {overlapping}");
 }
