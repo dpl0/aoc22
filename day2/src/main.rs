@@ -87,37 +87,31 @@ fn main() {
         let mut score_first = 0;
         let mut score_second = 0;
 
-        // Part 1
-        for l in lines {
-            match l {
-                Ok(line) => {
-                    let hands: Vec<&str> = line.split(" ").collect();
-                    let elf = match hands[0] {
-                        "A" => Rock,
-                        "B" => Paper,
-                        "C" => Scissors,
-                        _ => panic!("That elf is cheating!"),
-                    };
+        for line in lines.flatten() {
+            let hands: Vec<&str> = line.split(' ').collect();
+            let elf = match hands[0] {
+                "A" => Rock,
+                "B" => Paper,
+                "C" => Scissors,
+                _ => panic!("That elf is cheating!"),
+            };
 
-                    let me = match hands[1] {
-                        "X" => Rock,
-                        "Y" => Paper,
-                        "Z" => Scissors,
-                        _ => panic!("I'm cheating!??"),
-                    };
+            let me = match hands[1] {
+                "X" => Rock,
+                "Y" => Paper,
+                "Z" => Scissors,
+                _ => panic!("I'm cheating!??"),
+            };
 
-                    let outcome = match hands[1] {
-                        "X" => Loss,
-                        "Y" => Draw,
-                        "Z" => Win,
-                        _ => panic!("I'm cheating!??"),
-                    };
+            let outcome = match hands[1] {
+                "X" => Loss,
+                "Y" => Draw,
+                "Z" => Win,
+                _ => panic!("I'm cheating!??"),
+            };
 
-                    score_first += ClashFirst { elf, me }.outcome();
-                    score_second += ClashSecond { elf, outcome }.outcome();
-                },
-                _ => (),
-            }
+            score_first += ClashFirst { elf, me }.outcome();
+            score_second += ClashSecond { elf, outcome }.outcome();
         }
         println!("Problem 1: My final score is {score_first}");
         println!("Problem 2: My final score is {score_second}");

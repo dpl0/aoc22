@@ -21,12 +21,12 @@ pub fn calculate_priority(letters: &Vec<char>) -> u32 {
     priority
 }
 
-pub fn get_common_items<'a>(mut backpack: String) -> Vec<char> {
+pub fn get_common_items(mut backpack: String) -> Vec<char> {
     assert!(backpack.len() % 2 == 0);
     let splitted = backpack.split_off(backpack.len() / 2);
     let first_half: HashSet<char> = backpack.chars().collect();
     let second_half: HashSet<char> = splitted.chars().collect();
-    let common_items: Vec<char> = first_half.intersection(&second_half).map(|c| *c).collect();
+    let common_items: Vec<char> = first_half.intersection(&second_half).copied().collect();
     common_items
 }
 
@@ -36,15 +36,10 @@ pub fn get_common_items<'a>(mut backpack: String) -> Vec<char> {
 pub fn execute_first(path: &str) -> u32 {
     let mut priorities_sum: u32 = 0;
 
-    for line in get_lines(path) {
-        match line {
-            Ok(line) => {
-                let common_items = get_common_items(line);
-                let priority = calculate_priority(&common_items);
-                priorities_sum += priority;
-            },
-            _ => (),
-        }
+    for line in get_lines(path).flatten() {
+        let common_items = get_common_items(line);
+        let priority = calculate_priority(&common_items);
+        priorities_sum += priority;
     }
     priorities_sum
 }
@@ -59,8 +54,8 @@ pub fn execute_second(path: &str) -> u32 {
         let first: HashSet<char> = first.expect("Couldn't get string").chars().collect();
         let second: HashSet<char> = second.expect("Couldn't get string").chars().collect();
         let third: HashSet<char> = third.expect("Couldn't get string").chars().collect();
-        let common_items: HashSet<char> = first.intersection(&second).map(|c| *c).collect();
-        let common_items: Vec<char> = third.intersection(&common_items).map(|c| *c).collect();
+        let common_items: HashSet<char> = first.intersection(&second).copied().collect();
+        let common_items: Vec<char> = third.intersection(&common_items).copied().collect();
         let priority = calculate_priority(&common_items);
         priorities_sum += priority;
     }
